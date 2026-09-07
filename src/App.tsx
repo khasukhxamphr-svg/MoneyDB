@@ -14,7 +14,9 @@ import {
   db,
   auth,
   loginWithGoogle,
-  logoutUser
+  logoutUser,
+  parseAuthError,
+  type AuthErrorInfo
 } from './firebase';
 import { Transaction, TransactionType, MonthlySummary } from './types';
 import { Navbar } from './components/Navbar';
@@ -24,19 +26,20 @@ import { BudgetTracker } from './components/BudgetTracker';
 import { AnalyticsCharts } from './components/AnalyticsCharts';
 import { TransactionList } from './components/TransactionList';
 import { TransactionFormModal } from './components/TransactionFormModal';
+import { AuthHelpModal } from './components/AuthHelpModal';
 import { exportTransactionsToCSV } from './utils/exportCsv';
 import { getSeedTransactions } from './utils/demoData';
 import { 
   Database, 
-  CloudCheck, 
-  LogIn, 
   Sparkles, 
   CheckCircle2, 
   AlertCircle,
   ShieldCheck,
   PlusCircle,
   ArrowDownLeft,
-  ArrowUpRight
+  ArrowUpRight,
+  ExternalLink,
+  HelpCircle
 } from 'lucide-react';
 
 const LOCAL_STORAGE_KEY = 'moneydb_guest_transactions_v1';
@@ -62,6 +65,8 @@ export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalInitialType, setModalInitialType] = useState<TransactionType>('expense');
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
+  const [showAuthHelp, setShowAuthHelp] = useState(false);
+  const [authErrorInfo, setAuthErrorInfo] = useState<AuthErrorInfo | null>(null);
 
   const handleOpenAddModal = (initialType: TransactionType = 'expense') => {
     setEditingTransaction(null);
@@ -212,8 +217,11 @@ export default function App() {
       }
     } catch (err: any) {
       console.error("Login failed:", err);
+      const parsed = parseAuthError(err);
+      setAuthErrorInfo(parsed);
       if (err.code !== 'auth/popup-closed-by-user') {
-        showNotification(err.message || "ไม่สามารถเข้าสู่ระบบด้วย Google ได้ กรุณาลองใหม่อีกครั้ง", "error");
+        setShowAuthHelp(true);
+        showNotification(`${parsed.title}`, "error");
       }
     }
   };
@@ -441,6 +449,7 @@ export default function App() {
         onExportCSV={handleExportCSV}
         onSeedDemoData={handleSeedDemoData}
         hasTransactions={monthTransactions.length > 0}
+        onOpenAuthHelp={() => setShowAuthHelp(true)}
       />
 
       {/* Main Container */}
@@ -466,7 +475,7 @@ export default function App() {
                 </p>
               </div>
 
-              <div className="flex items-center gap-2 shrink-0">
+              <div className="flex flex-wrap items-center gap-2 shrink-0">
                 <button
                   id="btn-banner-login"
                   onClick={handleLogin}
@@ -492,6 +501,28 @@ export default function App() {
                     />
                   </svg>
                   <span>เข้าสู่ระบบด้วย Gmail</span>
+                </button>
+
+                <button
+                  id="btn-banner-open-tab"
+                  type="button"
+                  onClick={() => window.open(window.location.href, '_blank', 'noopener,noreferrer')}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-semibold text-xs sm:text-sm transition-colors shadow-2xs cursor-pointer"
+                  title="เปิดแอปในแท็บใหม่แบบเต็มจอ ช่วยให้ล็อกอินด้วย Google ได้ทันทีโดยไม่ติดขัด Pop-up บล็อก"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  <span>เปิดในแท็บใหม่</span>
+                </button>
+
+                <button
+                  id="btn-banner-auth-help"
+                  type="button"
+                  onClick={() => setShowAuthHelp(true)}
+                  className="inline-flex items-center gap-1 px-3 py-2.5 rounded-xl text-slate-600 hover:text-slate-800 hover:bg-sky-100/60 font-medium text-xs transition-colors cursor-pointer"
+                  title="ข้อแนะนำกรณีเข้าสู่ระบบไม่ผ่าน"
+                >
+                  <HelpCircle className="w-3.5 h-3.5 text-slate-500" />
+                  <span>เข้าสู่ระบบไม่ได้?</span>
                 </button>
               </div>
             </div>
@@ -653,6 +684,14 @@ export default function App() {
             ? currentDate.toISOString().split('T')[0]
             : `${selectedYear}-${String(selectedMonth).padStart(2, '0')}-01`
         }
+      />
+
+      {/* Google Sign-in / Firebase Auth Help Modal */}
+      <AuthHelpModal
+        isOpen={showAuthHelp}
+        onClose={() => setShowAuthHelp(false)}
+        errorInfo={authErrorInfo}
+        onRetryLogin={handleLogin}
       />
 
     </div>
