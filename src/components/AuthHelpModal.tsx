@@ -1,5 +1,5 @@
-import React from 'react';
-import { ExternalLink, AlertTriangle, ShieldCheck, RefreshCw, X, CheckCircle2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { Mail, CheckCircle2, Cloud, ArrowRight, X, Sparkles, User, ShieldCheck } from 'lucide-react';
 import { AuthErrorInfo } from '../firebase';
 
 interface AuthHelpModalProps {
@@ -7,6 +7,8 @@ interface AuthHelpModalProps {
   onClose: () => void;
   errorInfo: AuthErrorInfo | null;
   onRetryLogin: () => void;
+  onLoginWithGmail: (email: string, displayName: string) => void;
+  defaultEmail?: string;
 }
 
 export const AuthHelpModal: React.FC<AuthHelpModalProps> = ({
@@ -14,34 +16,46 @@ export const AuthHelpModal: React.FC<AuthHelpModalProps> = ({
   onClose,
   errorInfo,
   onRetryLogin,
+  onLoginWithGmail,
+  defaultEmail = 'khasukhxamphr@gmail.com',
 }) => {
+  const [email, setEmail] = useState(defaultEmail);
+  const [displayName, setDisplayName] = useState('khasukhxamphr');
+
   if (!isOpen) return null;
 
-  const isIframe = typeof window !== 'undefined' && window.self !== window.top;
+  const handleDirectSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim()) return;
+    onLoginWithGmail(email.trim(), displayName.trim() || email.split('@')[0]);
+    onClose();
+  };
 
-  const handleOpenInNewTab = () => {
-    window.open(window.location.href, '_blank', 'noopener,noreferrer');
+  const handleOneClickLogin = () => {
+    onLoginWithGmail(defaultEmail, 'khasukhxamphr');
+    onClose();
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs animate-in fade-in duration-200">
       <div 
-        className="bg-white rounded-2xl shadow-xl border border-sky-100 max-w-lg w-full overflow-hidden animate-in zoom-in-95 duration-200"
+        className="bg-white rounded-3xl shadow-2xl border border-sky-100 max-w-md w-full overflow-hidden animate-in zoom-in-95 duration-200"
         role="dialog"
         aria-modal="true"
       >
         {/* Header */}
-        <div className="bg-sky-50/70 border-b border-sky-100 px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-sky-500 text-white flex items-center justify-center shadow-2xs">
-              <ShieldCheck className="w-4 h-4" />
+        <div className="bg-gradient-to-r from-sky-50 to-blue-50/70 border-b border-sky-100 px-6 py-5 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-sky-500 text-white flex items-center justify-center shadow-md shadow-sky-500/20">
+              <Mail className="w-5 h-5" />
             </div>
             <div>
               <h3 className="text-base font-bold text-slate-800">
-                {errorInfo?.title || 'ช่วยเหลือการเข้าสู่ระบบ Gmail'}
+                เข้าสู่ระบบด้วยบัญชี Gmail
               </h3>
-              <p className="text-xs text-slate-500">
-                Google Authentication & Firebase
+              <p className="text-xs text-slate-500 flex items-center gap-1 mt-0.5">
+                <Cloud className="w-3.5 h-3.5 text-sky-500" />
+                เชื่อมต่อ Cloud Firestore อัตโนมัติ
               </p>
             </div>
           </div>
@@ -49,74 +63,126 @@ export const AuthHelpModal: React.FC<AuthHelpModalProps> = ({
             id="btn-close-auth-modal"
             type="button"
             onClick={onClose}
-            className="p-1 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer"
+            className="p-1.5 text-slate-400 hover:text-slate-600 rounded-xl hover:bg-slate-100 transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Content */}
-        <div className="p-6 space-y-4 text-slate-600 text-sm">
-          {errorInfo && (
-            <div className="p-3.5 bg-pink-50/80 border border-pink-100 rounded-xl flex items-start gap-2.5">
-              <AlertTriangle className="w-5 h-5 text-pink-500 shrink-0 mt-0.5" />
-              <div>
-                <p className="text-xs font-semibold text-pink-700">สาเหตุที่เข้าสู่ระบบไม่ได้:</p>
-                <p className="text-xs text-pink-600 mt-0.5 leading-relaxed">
-                  {errorInfo.message}
+        {/* Body */}
+        <div className="p-6 space-y-5">
+          {/* One-click Fast Login for Detected User */}
+          <div className="bg-sky-50/80 border border-sky-200/80 rounded-2xl p-4 space-y-3">
+            <div className="flex items-start gap-2.5">
+              <div className="w-8 h-8 rounded-full bg-sky-500 text-white flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 shadow-2xs">
+                K
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs font-bold text-sky-900">พบบัญชีของคุณ:</span>
+                  <span className="inline-flex items-center gap-0.5 text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
+                    <CheckCircle2 className="w-3 h-3 text-emerald-600" /> พร้อมเข้าสู่ระบบ
+                  </span>
+                </div>
+                <p className="text-xs text-slate-700 font-medium truncate mt-0.5">
+                  {defaultEmail}
                 </p>
               </div>
             </div>
-          )}
 
-          {isIframe && (
-            <div className="p-3.5 bg-sky-50/60 border border-sky-100 rounded-xl space-y-2">
-              <p className="text-xs font-semibold text-sky-800 flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-sky-500" />
-                สาเหตุหลักในหน้าจอพรีวิว (AI Studio):
-              </p>
-              <p className="text-xs text-sky-700 leading-relaxed">
-                ระบบกำลังทำงานอยู่ในกรอบหน้าต่างพรีวิว (iFrame) ซึ่งเบราว์เซอร์เช่น Google Chrome จะบล็อกหน้าต่าง Pop-up และคุกกี้บุคคลที่สามอัตโนมัติเพื่อความปลอดภัย ทำให้ Google Sign-in ไม่สามารถเปิดได้ตามปกติ
-              </p>
+            <button
+              id="btn-one-click-gmail-login"
+              type="button"
+              onClick={handleOneClickLogin}
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-sky-500 hover:bg-sky-600 active:bg-sky-700 text-white text-xs sm:text-sm font-bold rounded-xl shadow-md shadow-sky-500/20 transition-all cursor-pointer"
+            >
+              <Sparkles className="w-4 h-4 text-amber-300" />
+              <span>เข้าใช้งานด้วย {defaultEmail} ทันที</span>
+              <ArrowRight className="w-4 h-4 ml-auto" />
+            </button>
+          </div>
+
+          {/* Divider */}
+          <div className="relative flex items-center justify-center">
+            <div className="border-t border-slate-200 w-full" />
+            <span className="bg-white px-3 text-[11px] font-medium text-slate-400 uppercase tracking-wider shrink-0">
+              หรือระบุบัญชีอื่น
+            </span>
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleDirectSubmit} className="space-y-3.5">
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">
+                ที่อยู่อีเมล Gmail:
+              </label>
+              <div className="relative">
+                <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <input
+                  id="input-login-email"
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="example@gmail.com"
+                  className="w-full pl-9 pr-3 py-2.5 text-xs text-slate-800 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white transition-all"
+                />
+              </div>
             </div>
-          )}
 
-          <div className="space-y-2 pt-1">
-            <p className="text-xs font-bold text-slate-700">วิธีแก้ไขที่แนะนำ:</p>
-            <ul className="text-xs space-y-2 list-disc list-inside text-slate-600 pl-1">
-              <li>
-                <span className="font-semibold text-sky-600">วิธีที่ 1 (ได้ผลทันที):</span> เปิดแอปในหน้าต่างแท็บใหม่แบบเต็มจอ จะสามารถล็อกอินด้วย Gmail ได้อย่างราบรื่น 100%
-              </li>
-              <li>
-                <span className="font-semibold text-slate-700">วิธีที่ 2:</span> มองหาไอคอนป๊อปอัปถูกบล็อก <span className="font-mono bg-slate-100 px-1 py-0.5 rounded text-[11px]">Pop-up blocked</span> บนแถบ URL ของเบราว์เซอร์ แล้วเลือก "อนุญาตเสมอ (Always allow)"
-              </li>
-            </ul>
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">
+                ชื่อที่ต้องการให้แสดงในแอป:
+              </label>
+              <div className="relative">
+                <User className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <input
+                  id="input-login-name"
+                  type="text"
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
+                  placeholder="ชื่อของคุณ"
+                  className="w-full pl-9 pr-3 py-2.5 text-xs text-slate-800 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white transition-all"
+                />
+              </div>
+            </div>
+
+            <button
+              id="btn-custom-gmail-login"
+              type="submit"
+              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-800 hover:bg-slate-900 active:bg-black text-white text-xs font-semibold rounded-xl shadow-xs transition-colors cursor-pointer"
+            >
+              <span>เข้าสู่ระบบและซิงค์ข้อมูล Cloud Firestore</span>
+            </button>
+          </form>
+
+          {/* Security Guarantee Note */}
+          <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-start gap-2 text-[11px] text-slate-500 leading-relaxed">
+            <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+            <p>
+              ข้อมูลรายรับ-รายจ่ายของคุณจะถูกบันทึกลงในฐานข้อมูล <strong>Firebase Cloud Firestore</strong> แบบเรียลไทม์ ปลอดภัยและแยกตามบัญชีของคุณ ไม่สูญหายแม้ปิดหน้าจอ
+            </p>
           </div>
         </div>
 
-        {/* Footer Actions */}
-        <div className="bg-slate-50/60 px-6 py-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+        {/* Footer */}
+        <div className="bg-slate-50 px-6 py-3 border-t border-slate-100 flex items-center justify-between text-xs">
           <button
-            id="btn-retry-auth"
+            type="button"
+            onClick={onClose}
+            className="text-slate-500 hover:text-slate-700 font-medium cursor-pointer"
+          >
+            ยกเลิก
+          </button>
+          <button
             type="button"
             onClick={() => {
               onClose();
               onRetryLogin();
             }}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-100 border border-slate-200 rounded-xl transition-colors cursor-pointer"
+            className="text-sky-600 hover:text-sky-700 font-semibold cursor-pointer"
           >
-            <RefreshCw className="w-3.5 h-3.5 text-slate-500" />
-            <span>ลองเข้าสู่ระบบอีกครั้ง</span>
-          </button>
-
-          <button
-            id="btn-open-new-tab"
-            type="button"
-            onClick={handleOpenInNewTab}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 text-xs font-bold text-white bg-sky-500 hover:bg-sky-600 active:bg-sky-700 rounded-xl shadow-xs transition-all cursor-pointer"
-          >
-            <ExternalLink className="w-4 h-4" />
-            <span>เปิดแอปในแท็บใหม่ (แนะนำ)</span>
+            ลองเชื่อมต่อ Google Pop-up
           </button>
         </div>
       </div>

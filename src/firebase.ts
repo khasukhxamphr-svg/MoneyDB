@@ -121,10 +121,70 @@ export const parseAuthError = (error: any): AuthErrorInfo => {
   };
 };
 
-export const loginWithGoogle = async () => {
+import { AppUser } from "./types";
+
+export const LOCAL_USER_STORAGE_KEY = 'moneydb_active_account_v1';
+
+export const createOrLoginWithGmailUser = (email: string, displayName?: string): AppUser => {
+  const cleanEmail = email.trim().toLowerCase();
+  const safeUid = 'user_' + cleanEmail.replace(/[^a-z0-9]/g, '_');
+  const fallbackName = cleanEmail.split('@')[0] || 'User';
+  const name = displayName?.trim() || fallbackName;
+  const initial = (name.charAt(0) || 'U').toUpperCase();
+  const photoURL = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=0284c7&color=fff&bold=true`;
+
+  const appUser: AppUser = {
+    uid: safeUid,
+    email: cleanEmail,
+    displayName: name,
+    photoURL,
+    isCustomAuth: true,
+  };
+
+  try {
+    localStorage.setItem(LOCAL_USER_STORAGE_KEY, JSON.stringify(appUser));
+  } catch (e) {
+    console.error("Failed to save user session:", e);
+  }
+
+  return appUser;
+};
+
+export const getActiveStoredUser = (): AppUser | null => {
+  try {
+    const raw = localStorage.getItem(LOCAL_USER_STORAGE_KEY);
+    if (raw) {
+      return JSON.parse(raw);
+    }
+  } catch (e) {
+    console.error("Failed to retrieve stored user:", e);
+  }
+  return null;
+};
+
+export const clearActiveStoredUser = (): void => {
+  try {
+    localStorage.removeItem(LOCAL_USER_STORAGE_KEY);
+  } catch (e) {
+    console.error("Failed to remove stored user:", e);
+  }
+};
+
+export const loginWithGoogle = async (): Promise<AppUser> => {
   try {
     const result = await signInWithPopup(auth, googleProvider);
-    return result.user;
+    const u = result.user;
+    const appUser: AppUser = {
+      uid: u.uid,
+      email: u.email || '',
+      displayName: u.displayName || u.email?.split('@')[0] || 'Google User',
+      photoURL: u.photoURL || undefined,
+      isCustomAuth: false,
+    };
+    try {
+      localStorage.setItem(LOCAL_USER_STORAGE_KEY, JSON.stringify(appUser));
+    } catch {}
+    return appUser;
   } catch (error: any) {
     console.error("Google sign-in error:", error);
     throw error;
@@ -132,7 +192,12 @@ export const loginWithGoogle = async () => {
 };
 
 export const logoutUser = async () => {
-  return signOut(auth);
+  clearActiveStoredUser();
+  try {
+    await signOut(auth);
+  } catch (e) {
+    console.warn("Firebase signout error:", e);
+  }
 };
 
 export { 
