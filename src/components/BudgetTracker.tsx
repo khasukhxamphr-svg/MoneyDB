@@ -30,27 +30,27 @@ export const BudgetTracker: React.FC<BudgetTrackerProps> = ({
   const overAmount = isOverBudget ? totalExpense - monthlyBudget : 0;
 
   // Determine status color
-  let barColor = 'bg-emerald-500';
-  let badgeColor = 'bg-emerald-50 text-emerald-700 border-emerald-200';
+  let barColor = 'bg-sky-400';
+  let badgeColor = 'bg-sky-50 text-sky-700 border-sky-200';
   let statusText = 'อยู่ในเกณฑ์ปลอดภัย';
 
   if (isOverBudget) {
-    barColor = 'bg-rose-500';
-    badgeColor = 'bg-rose-50 text-rose-700 border-rose-200';
+    barColor = 'bg-pink-500';
+    badgeColor = 'bg-pink-50 text-pink-700 border-pink-200';
     statusText = `เกินงบประมาณแล้ว ${formatThaiCurrency(overAmount)}`;
   } else if (percentUsed >= 85) {
-    barColor = 'bg-amber-500';
+    barColor = 'bg-amber-400';
     badgeColor = 'bg-amber-50 text-amber-700 border-amber-200';
     statusText = 'ใกล้ถึงขีดจำกัดงบประมาณ';
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs">
+    <div className="bg-white rounded-2xl border border-pink-100/80 p-5 shadow-2xs">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         
         {/* Title & Status */}
         <div className="flex items-center gap-3">
-          <div className="p-2.5 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
+          <div className="p-2.5 bg-sky-50 text-sky-500 rounded-xl border border-sky-100 flex items-center justify-center">
             <Target className="w-5 h-5" />
           </div>
           <div>
@@ -84,14 +84,14 @@ export const BudgetTracker: React.FC<BudgetTrackerProps> = ({
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 placeholder="ระบุจำนวนเงิน (บาท)"
-                className="w-32 px-3 py-1.5 text-xs sm:text-sm border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                className="w-32 px-3 py-1.5 text-xs sm:text-sm border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-sky-200 focus:border-sky-400"
                 autoFocus
               />
               <button
                 id="btn-save-budget"
                 type="button"
                 onClick={handleSave}
-                className="p-1.5 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 cursor-pointer"
+                className="p-1.5 bg-sky-500 text-white rounded-lg hover:bg-sky-600 cursor-pointer shadow-2xs"
                 title="บันทึกงบประมาณ"
               >
                 <Check className="w-4 h-4" />
@@ -114,7 +114,7 @@ export const BudgetTracker: React.FC<BudgetTrackerProps> = ({
                 setInputValue(monthlyBudget > 0 ? monthlyBudget.toString() : '20000');
                 setIsEditing(true);
               }}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg border border-slate-200 transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-700 bg-white hover:bg-sky-50 rounded-xl border border-slate-200 hover:border-sky-200 transition-colors cursor-pointer shadow-2xs"
             >
               <Edit2 className="w-3.5 h-3.5 text-slate-500" />
               <span>{monthlyBudget > 0 ? 'แก้ไขงบประมาณ' : 'ตั้งค่างบประมาณ'}</span>
@@ -131,7 +131,7 @@ export const BudgetTracker: React.FC<BudgetTrackerProps> = ({
             <span className="text-slate-600">
               ใช้ไปแล้ว <span className="font-semibold text-slate-800">{percentUsed}%</span>
             </span>
-            <span className={isOverBudget ? 'text-rose-600 font-semibold' : 'text-slate-600'}>
+            <span className={isOverBudget ? 'text-pink-600 font-semibold' : 'text-slate-600'}>
               {isOverBudget 
                 ? `เกินงบ ${formatThaiCurrency(overAmount)}` 
                 : `คงเหลืองบ ${formatThaiCurrency(remaining)}`}
@@ -147,7 +147,7 @@ export const BudgetTracker: React.FC<BudgetTrackerProps> = ({
           </div>
         </div>
       ) : (
-        <div className="mt-3 p-3 bg-slate-50 rounded-xl border border-dashed border-slate-200 flex items-center justify-between">
+        <div className="mt-3 p-3 bg-sky-50/50 rounded-xl border border-dashed border-sky-200/70 flex items-center justify-between">
           <p className="text-xs text-slate-500">
             ยังไม่ได้กำหนดวงเงินงบประมาณสำหรับเดือนนี้
           </p>
@@ -158,7 +158,7 @@ export const BudgetTracker: React.FC<BudgetTrackerProps> = ({
               setInputValue('25000');
               setIsEditing(true);
             }}
-            className="text-xs font-semibold text-blue-600 hover:text-blue-700 hover:underline cursor-pointer"
+            className="text-xs font-semibold text-sky-600 hover:text-sky-700 hover:underline cursor-pointer"
           >
             ตั้งงบแนะนำ 25,000 บาท
           </button>

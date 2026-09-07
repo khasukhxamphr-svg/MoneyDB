@@ -36,8 +36,8 @@ export const DEFAULT_EXPENSE_CATEGORIES: CategoryInfo[] = [
     name: 'Food & Dining',
     nameTh: 'อาหารและเครื่องดื่ม',
     icon: 'Utensils',
-    color: '#f97316',
-    bgColor: '#ffedd5',
+    color: '#fb7185',
+    bgColor: '#ffe4e6',
     type: 'expense'
   },
   {
@@ -45,8 +45,8 @@ export const DEFAULT_EXPENSE_CATEGORIES: CategoryInfo[] = [
     name: 'Transportation',
     nameTh: 'การเดินทาง / ค่าน้ำมัน',
     icon: 'Car',
-    color: '#0284c7',
-    bgColor: '#e0f2fe',
+    color: '#38bdf8',
+    bgColor: '#f0f9ff',
     type: 'expense'
   },
   {
@@ -54,8 +54,8 @@ export const DEFAULT_EXPENSE_CATEGORIES: CategoryInfo[] = [
     name: 'Housing & Utilities',
     nameTh: 'ที่อยู่อาศัย / ค่าน้ำ-ไฟ-เน็ต',
     icon: 'Home',
-    color: '#7c3aed',
-    bgColor: '#ede9fe',
+    color: '#c084fc',
+    bgColor: '#faf5ff',
     type: 'expense'
   },
   {
@@ -63,8 +63,8 @@ export const DEFAULT_EXPENSE_CATEGORIES: CategoryInfo[] = [
     name: 'Shopping',
     nameTh: 'ช้อปปิ้ง / ของใช้ส่วนตัว',
     icon: 'ShoppingBag',
-    color: '#ec4899',
-    bgColor: '#fce7f3',
+    color: '#f472b6',
+    bgColor: '#fdf2f8',
     type: 'expense'
   },
   {
@@ -72,8 +72,8 @@ export const DEFAULT_EXPENSE_CATEGORIES: CategoryInfo[] = [
     name: 'Entertainment',
     nameTh: 'บันเทิง / ท่องเที่ยว',
     icon: 'Film',
-    color: '#8b5cf6',
-    bgColor: '#f3e8ff',
+    color: '#a78bfa',
+    bgColor: '#f5f3ff',
     type: 'expense'
   },
   {
@@ -81,7 +81,7 @@ export const DEFAULT_EXPENSE_CATEGORIES: CategoryInfo[] = [
     name: 'Health & Medical',
     nameTh: 'สุขภาพ / ยารักษาโรค',
     icon: 'HeartPulse',
-    color: '#ef4444',
+    color: '#f87171',
     bgColor: '#fee2e2',
     type: 'expense'
   },
@@ -90,8 +90,8 @@ export const DEFAULT_EXPENSE_CATEGORIES: CategoryInfo[] = [
     name: 'Education',
     nameTh: 'การศึกษา / หนังสือ / อบรม',
     icon: 'GraduationCap',
-    color: '#0d9488',
-    bgColor: '#ccfbf1',
+    color: '#22d3ee',
+    bgColor: '#ecfeff',
     type: 'expense'
   },
   {
@@ -99,8 +99,8 @@ export const DEFAULT_EXPENSE_CATEGORIES: CategoryInfo[] = [
     name: 'Family & Pets',
     nameTh: 'ครอบครัว / สัตว์เลี้ยง',
     icon: 'Smile',
-    color: '#eab308',
-    bgColor: '#fef9c3',
+    color: '#fda4af',
+    bgColor: '#fff1f2',
     type: 'expense'
   },
   {
@@ -108,8 +108,8 @@ export const DEFAULT_EXPENSE_CATEGORIES: CategoryInfo[] = [
     name: 'Other Expense',
     nameTh: 'ค่าใช้จ่ายอื่นๆ',
     icon: 'MoreHorizontal',
-    color: '#64748b',
-    bgColor: '#f1f5f9',
+    color: '#94a3b8',
+    bgColor: '#f8fafc',
     type: 'expense'
   }
 ];
@@ -120,8 +120,8 @@ export const DEFAULT_INCOME_CATEGORIES: CategoryInfo[] = [
     name: 'Salary & Wage',
     nameTh: 'เงินเดือน / ค่าจ้าง',
     icon: 'Banknote',
-    color: '#10b981',
-    bgColor: '#d1fae5',
+    color: '#0284c7',
+    bgColor: '#e0f2fe',
     type: 'income'
   },
   {
@@ -129,8 +129,8 @@ export const DEFAULT_INCOME_CATEGORIES: CategoryInfo[] = [
     name: 'Business & Freelance',
     nameTh: 'ธุรกิจ / งานฟรีแลนซ์',
     icon: 'Briefcase',
-    color: '#059669',
-    bgColor: '#a7f3d0',
+    color: '#0ea5e9',
+    bgColor: '#bae6fd',
     type: 'income'
   },
   {
@@ -138,8 +138,8 @@ export const DEFAULT_INCOME_CATEGORIES: CategoryInfo[] = [
     name: 'Investment & Dividend',
     nameTh: 'การลงทุน / ดอกเบี้ย / เงินปันผล',
     icon: 'TrendingUp',
-    color: '#0ea5e9',
-    bgColor: '#e0f2fe',
+    color: '#06b6d4',
+    bgColor: '#cffafe',
     type: 'income'
   },
   {
@@ -147,8 +147,8 @@ export const DEFAULT_INCOME_CATEGORIES: CategoryInfo[] = [
     name: 'Bonus & Commission',
     nameTh: 'โบนัส / ค่าคอมมิชชั่น',
     icon: 'Gift',
-    color: '#8b5cf6',
-    bgColor: '#f3e8ff',
+    color: '#e879f9',
+    bgColor: '#fae8ff',
     type: 'income'
   },
   {
@@ -156,8 +156,8 @@ export const DEFAULT_INCOME_CATEGORIES: CategoryInfo[] = [
     name: 'Other Income',
     nameTh: 'รายรับอื่นๆ',
     icon: 'Coins',
-    color: '#14b8a6',
-    bgColor: '#ccfbf1',
+    color: '#38bdf8',
+    bgColor: '#f0f9ff',
     type: 'income'
   }
 ];

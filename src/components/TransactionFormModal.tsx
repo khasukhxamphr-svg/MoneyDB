@@ -148,18 +148,18 @@ export const TransactionFormModal: React.FC<TransactionFormModalProps> = ({
           )}
 
           {/* Type Selector (รายจ่าย vs รายรับ) */}
-          <div className="grid grid-cols-2 gap-2 p-1.5 bg-slate-100 rounded-2xl">
+          <div className="grid grid-cols-2 gap-2 p-1.5 bg-slate-100/80 rounded-2xl border border-slate-200/60">
             <button
               type="button"
               id="btn-select-expense"
               onClick={() => handleTypeChange('expense')}
               className={`flex items-center justify-center gap-2 py-2.5 rounded-xl font-bold text-sm transition-all cursor-pointer ${
                 type === 'expense'
-                  ? 'bg-white text-rose-600 shadow-sm'
+                  ? 'bg-white text-pink-600 shadow-2xs border border-pink-100'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              <ArrowDownLeft className="w-4 h-4" />
+              <ArrowDownLeft className="w-4 h-4 text-pink-500" />
               <span>รายจ่าย (Expense)</span>
             </button>
             <button
@@ -168,11 +168,11 @@ export const TransactionFormModal: React.FC<TransactionFormModalProps> = ({
               onClick={() => handleTypeChange('income')}
               className={`flex items-center justify-center gap-2 py-2.5 rounded-xl font-bold text-sm transition-all cursor-pointer ${
                 type === 'income'
-                  ? 'bg-white text-emerald-600 shadow-sm'
+                  ? 'bg-white text-sky-600 shadow-2xs border border-sky-100'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              <ArrowUpRight className="w-4 h-4" />
+              <ArrowUpRight className="w-4 h-4 text-sky-500" />
               <span>รายรับ (Income)</span>
             </button>
           </div>
@@ -192,7 +192,9 @@ export const TransactionFormModal: React.FC<TransactionFormModalProps> = ({
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 placeholder="0.00"
-                className="w-full text-2xl font-bold text-slate-800 px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                className={`w-full text-2xl font-bold text-slate-800 px-4 py-3 bg-slate-50/70 border border-slate-200 rounded-2xl outline-none focus:ring-2 ${
+                  type === 'expense' ? 'focus:ring-pink-200 focus:border-pink-400' : 'focus:ring-sky-200 focus:border-sky-400'
+                }`}
                 autoFocus
               />
               <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400">
@@ -208,7 +210,9 @@ export const TransactionFormModal: React.FC<TransactionFormModalProps> = ({
                   key={val}
                   type="button"
                   onClick={() => handleQuickAddAmount(val)}
-                  className="px-2.5 py-1 text-xs font-semibold bg-slate-100 hover:bg-emerald-50 hover:text-emerald-700 text-slate-700 rounded-lg transition-colors cursor-pointer shrink-0"
+                  className={`px-2.5 py-1 text-xs font-semibold bg-slate-100 text-slate-700 rounded-lg transition-colors cursor-pointer shrink-0 ${
+                    type === 'expense' ? 'hover:bg-pink-50 hover:text-pink-600' : 'hover:bg-sky-50 hover:text-sky-600'
+                  }`}
                 >
                   +{val.toLocaleString()}
                 </button>
@@ -217,7 +221,7 @@ export const TransactionFormModal: React.FC<TransactionFormModalProps> = ({
                 <button
                   type="button"
                   onClick={() => setAmount('')}
-                  className="px-2.5 py-1 text-xs font-semibold bg-slate-100 hover:bg-rose-50 hover:text-rose-600 text-slate-500 rounded-lg transition-colors cursor-pointer shrink-0"
+                  className="px-2.5 py-1 text-xs font-semibold bg-slate-100 hover:bg-pink-50 hover:text-pink-600 text-slate-500 rounded-lg transition-colors cursor-pointer shrink-0"
                 >
                   ล้างค่า
                 </button>
@@ -240,7 +244,9 @@ export const TransactionFormModal: React.FC<TransactionFormModalProps> = ({
                     onClick={() => setCategoryId(cat.id)}
                     className={`flex flex-col items-center justify-center p-2.5 rounded-xl border text-center transition-all cursor-pointer ${
                       isSelected
-                        ? 'border-emerald-500 bg-emerald-50 text-emerald-900 shadow-xs'
+                        ? type === 'expense'
+                          ? 'border-pink-300 bg-pink-50/70 text-pink-900 shadow-2xs'
+                          : 'border-sky-300 bg-sky-50/70 text-sky-900 shadow-2xs'
                         : 'border-slate-100 hover:border-slate-300 bg-white text-slate-700'
                     }`}
                   >
@@ -272,7 +278,7 @@ export const TransactionFormModal: React.FC<TransactionFormModalProps> = ({
                   required
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
-                  className="w-full text-xs sm:text-sm font-medium text-slate-700 px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                  className="w-full text-xs sm:text-sm font-medium text-slate-700 px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-200 focus:border-sky-400"
                 />
               </div>
             </div>
@@ -286,7 +292,7 @@ export const TransactionFormModal: React.FC<TransactionFormModalProps> = ({
                 type="time"
                 value={time}
                 onChange={(e) => setTime(e.target.value)}
-                className="w-full text-xs sm:text-sm font-medium text-slate-700 px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                className="w-full text-xs sm:text-sm font-medium text-slate-700 px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-200 focus:border-sky-400"
               />
             </div>
           </div>
@@ -306,7 +312,7 @@ export const TransactionFormModal: React.FC<TransactionFormModalProps> = ({
               onChange={(e) => setNote(e.target.value)}
               placeholder={type === 'expense' ? "เช่น ข้าวมันไก่พิเศษ, กาแฟอเมซอน, ค่าน้ำมัน PTT..." : "เช่น เงินเดือนประจำเดือน, งานเขียนโปรแกรม, ดอกเบี้ย..."}
               maxLength={120}
-              className="w-full text-xs sm:text-sm text-slate-700 px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+              className="w-full text-xs sm:text-sm text-slate-700 px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-200 focus:border-sky-400"
             />
             {/* Quick Note Tags */}
             <div className="flex items-center gap-1.5 mt-2 flex-wrap">
@@ -319,7 +325,9 @@ export const TransactionFormModal: React.FC<TransactionFormModalProps> = ({
                   key={tag}
                   type="button"
                   onClick={() => setNote(tag)}
-                  className="px-2 py-0.5 text-[11px] font-medium bg-slate-100 hover:bg-emerald-50 hover:text-emerald-700 text-slate-600 rounded-md transition-colors cursor-pointer"
+                  className={`px-2 py-0.5 text-[11px] font-medium bg-slate-100 text-slate-600 rounded-md transition-colors cursor-pointer ${
+                    type === 'expense' ? 'hover:bg-pink-50 hover:text-pink-600' : 'hover:bg-sky-50 hover:text-sky-600'
+                  }`}
                 >
                   #{tag}
                 </button>
@@ -329,8 +337,8 @@ export const TransactionFormModal: React.FC<TransactionFormModalProps> = ({
 
           {/* Delete Confirmation in Modal */}
           {showDeleteConfirm && (
-            <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl flex items-center justify-between gap-2 animate-in fade-in duration-150">
-              <span className="text-xs font-semibold text-rose-800">
+            <div className="p-3 bg-pink-50 border border-pink-200 rounded-xl flex items-center justify-between gap-2 animate-in fade-in duration-150">
+              <span className="text-xs font-semibold text-pink-900">
                 คุณแน่ใจหรือไม่ว่าต้องการลบรายการนี้?
               </span>
               <div className="flex items-center gap-2 shrink-0">
@@ -358,7 +366,7 @@ export const TransactionFormModal: React.FC<TransactionFormModalProps> = ({
                       }
                     }
                   }}
-                  className="px-3 py-1 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 rounded-lg shadow-xs cursor-pointer disabled:opacity-50"
+                  className="px-3 py-1 text-xs font-bold text-white bg-pink-600 hover:bg-pink-700 rounded-lg shadow-xs cursor-pointer disabled:opacity-50"
                 >
                   {deleting ? 'กำลังลบ...' : 'ยืนยันการลบ'}
                 </button>
@@ -374,7 +382,7 @@ export const TransactionFormModal: React.FC<TransactionFormModalProps> = ({
                 type="button"
                 onClick={() => setShowDeleteConfirm(true)}
                 disabled={submitting || deleting}
-                className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-rose-600 hover:text-rose-700 hover:bg-rose-50 rounded-xl transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-pink-600 hover:text-pink-700 hover:bg-pink-50 rounded-xl transition-colors cursor-pointer"
               >
                 <Trash2 className="w-4 h-4" />
                 <span>ลบรายการนี้</span>
@@ -394,7 +402,11 @@ export const TransactionFormModal: React.FC<TransactionFormModalProps> = ({
                 id="btn-submit-transaction"
                 type="submit"
                 disabled={submitting || deleting}
-                className="inline-flex items-center gap-2 px-5 py-2.5 text-xs sm:text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 rounded-xl shadow-md shadow-emerald-600/20 transition-all cursor-pointer disabled:opacity-50"
+                className={`inline-flex items-center gap-2 px-5 py-2.5 text-xs sm:text-sm font-bold text-white rounded-xl shadow-md transition-all cursor-pointer disabled:opacity-50 ${
+                  type === 'expense'
+                    ? 'bg-pink-500 hover:bg-pink-600 active:bg-pink-700 shadow-pink-200/50'
+                    : 'bg-sky-500 hover:bg-sky-600 active:bg-sky-700 shadow-sky-200/50'
+                }`}
               >
                 <Check className="w-4 h-4" />
                 <span>{submitting ? 'กำลังบันทึก...' : editTransaction ? 'บันทึกการแก้ไข' : 'เพิ่มรายการ'}</span>

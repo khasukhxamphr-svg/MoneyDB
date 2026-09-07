@@ -119,14 +119,14 @@ export const TransactionList: React.FC<TransactionListProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs">
+    <div className="bg-white rounded-2xl border border-pink-100/80 p-5 sm:p-6 shadow-2xs">
       
       {/* Header & Filter Controls */}
-      <div className="flex flex-col gap-4 border-b border-slate-100 pb-5">
+      <div className="flex flex-col gap-4 border-b border-pink-100/60 pb-5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h3 className="text-lg font-bold text-slate-800 tracking-tight flex items-center gap-2">
-              <Receipt className="w-5 h-5 text-emerald-600" />
+              <Receipt className="w-5 h-5 text-sky-500" />
               รายการบันทึกรายรับ-รายจ่าย
             </h3>
             <p className="text-xs text-slate-500 mt-0.5">
@@ -135,14 +135,14 @@ export const TransactionList: React.FC<TransactionListProps> = ({
           </div>
 
           {/* Type Filter Buttons */}
-          <div className="inline-flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-semibold self-start sm:self-auto">
+          <div className="inline-flex items-center bg-slate-50 p-1 rounded-xl border border-slate-200/80 text-xs font-semibold self-start sm:self-auto">
             <button
               id="filter-type-all"
               type="button"
               onClick={() => setTypeFilter('all')}
               className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
                 typeFilter === 'all'
-                  ? 'bg-white text-slate-900 shadow-xs'
+                  ? 'bg-white text-slate-800 shadow-2xs border border-slate-200'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -154,7 +154,7 @@ export const TransactionList: React.FC<TransactionListProps> = ({
               onClick={() => setTypeFilter('expense')}
               className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
                 typeFilter === 'expense'
-                  ? 'bg-white text-rose-600 shadow-xs'
+                  ? 'bg-white text-pink-600 shadow-2xs border border-pink-100'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -166,7 +166,7 @@ export const TransactionList: React.FC<TransactionListProps> = ({
               onClick={() => setTypeFilter('income')}
               className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
                 typeFilter === 'income'
-                  ? 'bg-white text-emerald-600 shadow-xs'
+                  ? 'bg-white text-sky-600 shadow-2xs border border-sky-100'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -185,7 +185,7 @@ export const TransactionList: React.FC<TransactionListProps> = ({
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="ค้นหารายการ, หมายเหตุ, หมวดหมู่ หรือยอดเงิน..."
-              className="w-full text-xs sm:text-sm pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+              className="w-full text-xs sm:text-sm pl-9 pr-4 py-2 bg-slate-50/70 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-sky-200 focus:border-sky-400"
             />
           </div>
 
@@ -194,7 +194,7 @@ export const TransactionList: React.FC<TransactionListProps> = ({
               id="filter-category"
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="w-full text-xs sm:text-sm px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 cursor-pointer"
+              className="w-full text-xs sm:text-sm px-3 py-2 bg-slate-50/70 border border-slate-200 rounded-xl text-slate-700 outline-none focus:ring-2 focus:ring-sky-200 focus:border-sky-400 cursor-pointer"
             >
               <option value="all">ทุกหมวดหมู่</option>
               <optgroup label="หมวดหมู่รายจ่าย">
@@ -226,12 +226,12 @@ export const TransactionList: React.FC<TransactionListProps> = ({
                 </div>
                 <div className="flex items-center gap-3 text-[11px]">
                   {group.dayIncome > 0 && (
-                    <span className="text-emerald-600 font-semibold">
+                    <span className="text-sky-600 font-semibold">
                       +{formatThaiCurrency(group.dayIncome)}
                     </span>
                   )}
                   {group.dayExpense > 0 && (
-                    <span className="text-rose-600 font-semibold">
+                    <span className="text-pink-600 font-semibold">
                       -{formatThaiCurrency(group.dayExpense)}
                     </span>
                   )}
@@ -239,7 +239,7 @@ export const TransactionList: React.FC<TransactionListProps> = ({
               </div>
 
               {/* Transactions in Day */}
-              <div className="divide-y divide-slate-100 border border-slate-100 rounded-2xl overflow-hidden bg-slate-50/50">
+              <div className="divide-y divide-pink-50 border border-pink-100/60 rounded-2xl overflow-hidden bg-slate-50/30">
                 {group.items.map((item) => {
                   const cat = getCategoryById(item.categoryId);
                   const isIncome = item.type === 'income';
@@ -247,12 +247,12 @@ export const TransactionList: React.FC<TransactionListProps> = ({
                   return (
                     <div
                       key={item.id}
-                      className="flex items-center justify-between p-3 sm:p-3.5 bg-white hover:bg-slate-50/80 transition-colors group"
+                      className="flex items-center justify-between p-3 sm:p-3.5 bg-white hover:bg-sky-50/30 transition-colors group"
                     >
                       {/* Left: Icon & Info */}
                       <div className="flex items-center gap-3 min-w-0 pr-2">
                         <div
-                          className="w-10 h-10 rounded-xl flex items-center justify-center text-white shrink-0 shadow-xs"
+                          className="w-10 h-10 rounded-xl flex items-center justify-center text-white shrink-0 shadow-2xs"
                           style={{ backgroundColor: cat.color }}
                         >
                           <CategoryIcon name={cat.icon} className="w-5 h-5" />
@@ -285,7 +285,7 @@ export const TransactionList: React.FC<TransactionListProps> = ({
                       <div className="flex items-center gap-2 sm:gap-4 shrink-0">
                         <span
                           className={`text-sm sm:text-base font-bold tracking-tight ${
-                            isIncome ? 'text-emerald-600' : 'text-rose-600'
+                            isIncome ? 'text-sky-600' : 'text-pink-600'
                           }`}
                         >
                           {isIncome ? '+' : '-'}{formatThaiCurrency(item.amount)}
@@ -296,7 +296,7 @@ export const TransactionList: React.FC<TransactionListProps> = ({
                           <button
                             type="button"
                             onClick={() => onEdit(item)}
-                            className="p-2 text-slate-400 hover:text-emerald-700 hover:bg-emerald-50 rounded-xl transition-colors cursor-pointer"
+                            className="p-2 text-slate-400 hover:text-sky-600 hover:bg-sky-50 rounded-xl transition-colors cursor-pointer"
                             title="แก้ไขรายการ"
                           >
                             <Edit3 className="w-4 h-4" />
@@ -304,7 +304,7 @@ export const TransactionList: React.FC<TransactionListProps> = ({
                           <button
                             type="button"
                             onClick={() => handleDeleteClick(item)}
-                            className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-colors cursor-pointer"
+                            className="p-2 text-slate-400 hover:text-pink-600 hover:bg-pink-50 rounded-xl transition-colors cursor-pointer"
                             title="ลบรายการ"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -320,8 +320,8 @@ export const TransactionList: React.FC<TransactionListProps> = ({
             </div>
           ))
         ) : (
-          <div className="text-center py-12 bg-slate-50/50 rounded-2xl border border-dashed border-slate-200">
-            <div className="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
+          <div className="text-center py-12 bg-sky-50/20 rounded-2xl border border-dashed border-pink-200/80">
+            <div className="w-12 h-12 rounded-full bg-pink-50 text-pink-400 flex items-center justify-center mx-auto mb-3">
               <Receipt className="w-6 h-6" />
             </div>
             <p className="text-sm font-semibold text-slate-700">ไม่พบรายการบันทึกในเงื่อนไขนี้</p>
@@ -335,7 +335,7 @@ export const TransactionList: React.FC<TransactionListProps> = ({
                 id="btn-empty-add-transaction"
                 type="button"
                 onClick={onOpenAddModal}
-                className="mt-4 inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-xs transition-colors cursor-pointer"
+                className="mt-4 inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-pink-500 hover:bg-pink-600 rounded-xl shadow-xs transition-colors cursor-pointer"
               >
                 + บันทึกรายการแรกของเดือน
               </button>

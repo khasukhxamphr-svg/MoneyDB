@@ -50,12 +50,12 @@ export const MonthSelector: React.FC<MonthSelectorProps> = ({
   const availableYears = Array.from({ length: 6 }, (_, i) => currentYear - 3 + i);
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/80 p-4 sm:p-5 shadow-xs">
+    <div className="bg-white rounded-2xl border border-pink-100/80 p-4 sm:p-5 shadow-2xs">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         
         {/* Current Selected Display & Navigation */}
         <div className="flex items-center gap-2 sm:gap-3">
-          <div className="p-2.5 bg-emerald-50 text-emerald-600 rounded-xl border border-emerald-100 flex items-center justify-center">
+          <div className="p-2.5 bg-sky-50 text-sky-600 rounded-xl border border-sky-200 flex items-center justify-center">
             <CalendarDays className="w-5 h-5" />
           </div>
           <div>
@@ -64,7 +64,7 @@ export const MonthSelector: React.FC<MonthSelectorProps> = ({
                 {getMonthLabel(selectedYear, selectedMonth)}
               </h2>
               {isCurrentMonth && (
-                <span className="text-[11px] font-semibold bg-emerald-100/70 text-emerald-800 px-2.5 py-0.5 rounded-full">
+                <span className="text-[11px] font-semibold bg-pink-50 text-pink-600 px-2.5 py-0.5 rounded-full border border-pink-200/80">
                   เดือนปัจจุบัน
                 </span>
               )}
@@ -78,7 +78,7 @@ export const MonthSelector: React.FC<MonthSelectorProps> = ({
         {/* Action Controls */}
         <div className="flex items-center gap-2 flex-wrap">
           {/* Quick prev/next buttons */}
-          <div className="inline-flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200">
+          <div className="inline-flex items-center bg-slate-50 p-1 rounded-xl border border-slate-200/80">
             <button
               id="btn-prev-month"
               onClick={handlePrevMonth}
@@ -95,7 +95,7 @@ export const MonthSelector: React.FC<MonthSelectorProps> = ({
               disabled={isCurrentMonth}
               className={`px-3 py-1 text-xs font-semibold rounded-lg transition-colors cursor-pointer ${
                 isCurrentMonth 
-                  ? 'bg-white text-slate-800 shadow-xs' 
+                  ? 'bg-white text-slate-800 shadow-2xs border border-slate-100' 
                   : 'text-slate-600 hover:bg-white hover:text-slate-900'
               }`}
             >
@@ -117,7 +117,7 @@ export const MonthSelector: React.FC<MonthSelectorProps> = ({
             id="select-month"
             value={selectedMonth}
             onChange={(e) => onSelectMonth(selectedYear, parseInt(e.target.value, 10))}
-            className="bg-slate-50 border border-slate-200 text-slate-700 text-xs sm:text-sm font-medium rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 cursor-pointer"
+            className="bg-slate-50/70 border border-slate-200 text-slate-700 text-xs sm:text-sm font-medium rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-pink-300/30 focus:border-pink-300 cursor-pointer"
           >
             {THAI_MONTHS.map((name, index) => (
               <option key={name} value={index + 1}>
@@ -131,7 +131,7 @@ export const MonthSelector: React.FC<MonthSelectorProps> = ({
             id="select-year"
             value={selectedYear}
             onChange={(e) => onSelectMonth(parseInt(e.target.value, 10), selectedMonth)}
-            className="bg-slate-50 border border-slate-200 text-slate-700 text-xs sm:text-sm font-medium rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 cursor-pointer"
+            className="bg-slate-50/70 border border-slate-200 text-slate-700 text-xs sm:text-sm font-medium rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-sky-300/30 focus:border-sky-300 cursor-pointer"
           >
             {availableYears.map((year) => (
               <option key={year} value={year}>

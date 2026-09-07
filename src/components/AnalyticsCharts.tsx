@@ -216,13 +216,13 @@ export const AnalyticsCharts: React.FC<AnalyticsChartsProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs">
+    <div className="bg-white rounded-2xl border border-pink-100/80 p-5 sm:p-6 shadow-2xs">
       
       {/* Header & Tabs */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-pink-100/60 pb-4">
         <div>
           <h3 className="text-lg font-bold text-slate-800 tracking-tight flex items-center gap-2">
-            <BarChart3 className="w-5 h-5 text-emerald-600" />
+            <BarChart3 className="w-5 h-5 text-pink-500" />
             กราฟวิเคราะห์ข้อมูลทางการเงิน
           </h3>
           <p className="text-xs text-slate-500 mt-0.5">
@@ -231,14 +231,14 @@ export const AnalyticsCharts: React.FC<AnalyticsChartsProps> = ({
         </div>
 
         {/* Tab Selection */}
-        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-semibold overflow-x-auto">
+        <div className="flex items-center gap-1 bg-slate-50 p-1 rounded-xl border border-slate-200/80 text-xs font-semibold overflow-x-auto">
           <button
             id="tab-expense-category"
             type="button"
             onClick={() => setActiveTab('expense-category')}
             className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer whitespace-nowrap ${
               activeTab === 'expense-category'
-                ? 'bg-white text-slate-900 shadow-xs'
+                ? 'bg-white text-pink-600 shadow-2xs border border-pink-100'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
@@ -250,7 +250,7 @@ export const AnalyticsCharts: React.FC<AnalyticsChartsProps> = ({
             onClick={() => setActiveTab('daily-trend')}
             className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer whitespace-nowrap ${
               activeTab === 'daily-trend'
-                ? 'bg-white text-slate-900 shadow-xs'
+                ? 'bg-white text-sky-600 shadow-2xs border border-sky-100'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
@@ -262,7 +262,7 @@ export const AnalyticsCharts: React.FC<AnalyticsChartsProps> = ({
             onClick={() => setActiveTab('monthly-history')}
             className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer whitespace-nowrap ${
               activeTab === 'monthly-history'
-                ? 'bg-white text-slate-900 shadow-xs'
+                ? 'bg-white text-slate-800 shadow-2xs border border-slate-200'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
@@ -274,7 +274,7 @@ export const AnalyticsCharts: React.FC<AnalyticsChartsProps> = ({
             onClick={() => setActiveTab('income-category')}
             className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer whitespace-nowrap ${
               activeTab === 'income-category'
-                ? 'bg-white text-slate-900 shadow-xs'
+                ? 'bg-white text-sky-600 shadow-2xs border border-sky-100'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
@@ -406,8 +406,8 @@ export const AnalyticsCharts: React.FC<AnalyticsChartsProps> = ({
                     </span>
                   )}
                 />
-                <Bar dataKey="income" name="income" fill="#10b981" radius={[4, 4, 0, 0]} maxBarSize={18} />
-                <Bar dataKey="expense" name="expense" fill="#f43f5e" radius={[4, 4, 0, 0]} maxBarSize={18} />
+                <Bar dataKey="income" name="income" fill="#38bdf8" radius={[4, 4, 0, 0]} maxBarSize={18} />
+                <Bar dataKey="expense" name="expense" fill="#f472b6" radius={[4, 4, 0, 0]} maxBarSize={18} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -423,16 +423,6 @@ export const AnalyticsCharts: React.FC<AnalyticsChartsProps> = ({
           <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={multiMonthStats} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
-                <defs>
-                  <linearGradient id="colorIncome" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.25} />
-                    <stop offset="95%" stopColor="#10b981" stopOpacity={0.0} />
-                  </linearGradient>
-                  <linearGradient id="colorExpense" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#f43f5e" stopOpacity={0.25} />
-                    <stop offset="95%" stopColor="#f43f5e" stopOpacity={0.0} />
-                  </linearGradient>
-                </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
                 <XAxis 
                   dataKey="monthLabel" 
@@ -454,7 +444,7 @@ export const AnalyticsCharts: React.FC<AnalyticsChartsProps> = ({
                   contentStyle={{ backgroundColor: '#0f172a', borderRadius: '12px', border: 'none', color: '#fff', fontSize: '12px' }}
                 />
                 <Legend 
-                  wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }}
+                  wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} 
                   formatter={(value) => (
                     <span className="text-slate-700 font-medium">
                       {value === 'income' ? 'รายรับ' : 'รายจ่าย'}
@@ -464,18 +454,18 @@ export const AnalyticsCharts: React.FC<AnalyticsChartsProps> = ({
                 <Area 
                   type="monotone" 
                   dataKey="income" 
-                  stroke="#10b981" 
+                  stroke="#38bdf8" 
                   strokeWidth={2.5}
-                  fillOpacity={1} 
-                  fill="url(#colorIncome)" 
+                  fillOpacity={0.18} 
+                  fill="#38bdf8" 
                 />
                 <Area 
                   type="monotone" 
                   dataKey="expense" 
-                  stroke="#f43f5e" 
+                  stroke="#f472b6" 
                   strokeWidth={2.5}
-                  fillOpacity={1} 
-                  fill="url(#colorExpense)" 
+                  fillOpacity={0.18} 
+                  fill="#f472b6" 
                 />
               </AreaChart>
             </ResponsiveContainer>
@@ -518,7 +508,7 @@ export const AnalyticsCharts: React.FC<AnalyticsChartsProps> = ({
                 {/* Center Label in Donut */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                   <span className="text-[11px] font-medium text-slate-400">รายรับรวม</span>
-                  <span className="text-sm font-bold text-emerald-600">
+                  <span className="text-sm font-bold text-sky-600">
                     {formatThaiCurrency(incomeCategoryStats.reduce((sum, s) => sum + s.totalAmount, 0))}
                   </span>
                 </div>
@@ -547,7 +537,7 @@ export const AnalyticsCharts: React.FC<AnalyticsChartsProps> = ({
                         </span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-emerald-600">
+                        <span className="font-bold text-sky-600">
                           {formatThaiCurrency(stat.totalAmount)}
                         </span>
                         <span className="text-[11px] font-semibold text-slate-500 w-11 text-right">
@@ -568,7 +558,7 @@ export const AnalyticsCharts: React.FC<AnalyticsChartsProps> = ({
             </div>
           ) : (
             <div className="text-center py-12">
-              <div className="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
+              <div className="w-12 h-12 rounded-full bg-sky-50 text-sky-400 flex items-center justify-center mx-auto mb-3">
                 <TrendingUp className="w-6 h-6" />
               </div>
               <p className="text-sm font-semibold text-slate-700">ยังไม่มีข้อมูลรายรับในเดือนนี้</p>

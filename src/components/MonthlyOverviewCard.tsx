@@ -33,19 +33,19 @@ export const MonthlyOverviewCard: React.FC<MonthlyOverviewCardProps> = ({
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       
-      {/* Total Income Card */}
-      <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs hover:border-emerald-200 transition-colors">
+      {/* Total Income Card - Pastel Blue */}
+      <div className="bg-white rounded-2xl border border-sky-100/90 p-5 shadow-2xs hover:border-sky-300 transition-colors">
         <div className="flex items-center justify-between">
           <span className="text-xs font-semibold text-slate-500 tracking-wide uppercase">
             รายรับรวม
           </span>
-          <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-xl bg-sky-50 text-sky-500 border border-sky-100 flex items-center justify-center">
             <TrendingUp className="w-4 h-4" />
           </div>
         </div>
 
         <div className="mt-3">
-          <p className="text-2xl font-bold text-emerald-600 tracking-tight">
+          <p className="text-2xl font-bold text-sky-600 tracking-tight">
             {formatThaiCurrency(currentSummary.totalIncome)}
           </p>
         </div>
@@ -54,12 +54,12 @@ export const MonthlyOverviewCard: React.FC<MonthlyOverviewCardProps> = ({
           <span className="text-slate-400">เทียบเดือนก่อน</span>
           {incomeDiff !== null ? (
             <span className={`inline-flex items-center font-medium ${
-              incomeDiff >= 0 ? 'text-emerald-600' : 'text-slate-600'
+              incomeDiff >= 0 ? 'text-sky-600' : 'text-slate-500'
             }`}>
               {incomeDiff >= 0 ? (
-                <ArrowUpRight className="w-3.5 h-3.5 mr-0.5" />
+                <ArrowUpRight className="w-3.5 h-3.5 mr-0.5 text-sky-500" />
               ) : (
-                <ArrowDownRight className="w-3.5 h-3.5 mr-0.5" />
+                <ArrowDownRight className="w-3.5 h-3.5 mr-0.5 text-slate-400" />
               )}
               {Math.abs(incomeDiff).toFixed(1)}%
             </span>
@@ -69,19 +69,19 @@ export const MonthlyOverviewCard: React.FC<MonthlyOverviewCardProps> = ({
         </div>
       </div>
 
-      {/* Total Expense Card */}
-      <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs hover:border-rose-200 transition-colors">
+      {/* Total Expense Card - Pastel Pink */}
+      <div className="bg-white rounded-2xl border border-pink-100/90 p-5 shadow-2xs hover:border-pink-300 transition-colors">
         <div className="flex items-center justify-between">
           <span className="text-xs font-semibold text-slate-500 tracking-wide uppercase">
             รายจ่ายรวม
           </span>
-          <div className="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-xl bg-pink-50 text-pink-500 border border-pink-100 flex items-center justify-center">
             <TrendingDown className="w-4 h-4" />
           </div>
         </div>
 
         <div className="mt-3">
-          <p className="text-2xl font-bold text-rose-600 tracking-tight">
+          <p className="text-2xl font-bold text-pink-600 tracking-tight">
             {formatThaiCurrency(currentSummary.totalExpense)}
           </p>
         </div>
@@ -94,16 +94,16 @@ export const MonthlyOverviewCard: React.FC<MonthlyOverviewCardProps> = ({
         </div>
       </div>
 
-      {/* Net Balance (Cash Flow) */}
-      <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs hover:border-slate-300 transition-colors">
+      {/* Net Balance (Cash Flow) - Pastel Balance */}
+      <div className="bg-white rounded-2xl border border-pink-100/70 p-5 shadow-2xs hover:border-sky-200 transition-colors">
         <div className="flex items-center justify-between">
           <span className="text-xs font-semibold text-slate-500 tracking-wide uppercase">
             ยอดคงเหลือสุทธิ
           </span>
-          <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+          <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${
             currentSummary.netBalance >= 0 
-              ? 'bg-teal-50 text-teal-600' 
-              : 'bg-amber-50 text-amber-600'
+              ? 'bg-sky-50 text-sky-500 border border-sky-100' 
+              : 'bg-pink-50 text-pink-500 border border-pink-100'
           }`}>
             <Wallet className="w-4 h-4" />
           </div>
@@ -111,7 +111,7 @@ export const MonthlyOverviewCard: React.FC<MonthlyOverviewCardProps> = ({
 
         <div className="mt-3">
           <p className={`text-2xl font-bold tracking-tight ${
-            currentSummary.netBalance >= 0 ? 'text-slate-800' : 'text-rose-600'
+            currentSummary.netBalance >= 0 ? 'text-slate-800' : 'text-pink-600'
           }`}>
             {formatThaiCurrency(currentSummary.netBalance)}
           </p>
@@ -119,12 +119,12 @@ export const MonthlyOverviewCard: React.FC<MonthlyOverviewCardProps> = ({
 
         <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
           <span className="text-slate-400">สถานะกระแสเงินสด</span>
-          <span className={`font-semibold px-2 py-0.5 rounded-full text-[11px] ${
+          <span className={`font-semibold px-2.5 py-0.5 rounded-full text-[11px] border ${
             currentSummary.netBalance > 0
-              ? 'bg-emerald-50 text-emerald-700'
+              ? 'bg-sky-50 text-sky-700 border-sky-200'
               : currentSummary.netBalance === 0
-              ? 'bg-slate-100 text-slate-600'
-              : 'bg-rose-50 text-rose-700'
+              ? 'bg-slate-100 text-slate-600 border-slate-200'
+              : 'bg-pink-50 text-pink-700 border-pink-200'
           }`}>
             {currentSummary.netBalance > 0 
               ? 'มีเงินเก็บเพิ่ม' 
@@ -135,19 +135,19 @@ export const MonthlyOverviewCard: React.FC<MonthlyOverviewCardProps> = ({
         </div>
       </div>
 
-      {/* Savings Rate Card */}
-      <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs hover:border-slate-300 transition-colors">
+      {/* Savings Rate Card - Pastel Accent */}
+      <div className="bg-white rounded-2xl border border-pink-100/70 p-5 shadow-2xs hover:border-pink-200 transition-colors">
         <div className="flex items-center justify-between">
           <span className="text-xs font-semibold text-slate-500 tracking-wide uppercase">
             อัตราการออมเงิน
           </span>
-          <div className="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-xl bg-pink-50 text-pink-500 border border-pink-100 flex items-center justify-center">
             <PiggyBank className="w-4 h-4" />
           </div>
         </div>
 
         <div className="mt-3">
-          <p className="text-2xl font-bold text-indigo-600 tracking-tight">
+          <p className="text-2xl font-bold text-pink-500 tracking-tight">
             {currentSummary.savingsRate > 0 ? `${currentSummary.savingsRate.toFixed(1)}%` : '0%'}
           </p>
         </div>

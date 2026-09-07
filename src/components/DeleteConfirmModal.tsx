@@ -32,7 +32,7 @@ export const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
       >
         {/* Header Icon */}
         <div className="flex items-start justify-between">
-          <div className="w-12 h-12 rounded-2xl bg-rose-50 border border-rose-100 flex items-center justify-center text-rose-600">
+          <div className="w-12 h-12 rounded-2xl bg-pink-50 border border-pink-100 flex items-center justify-center text-pink-500">
             <Trash2 className="w-6 h-6" />
           </div>
           <button
@@ -56,10 +56,10 @@ export const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
         </div>
 
         {/* Transaction Summary Card Preview */}
-        <div className="mt-4 p-3.5 bg-slate-50 rounded-2xl border border-slate-200/80 flex items-center justify-between">
+        <div className="mt-4 p-3.5 bg-slate-50/70 rounded-2xl border border-pink-100/70 flex items-center justify-between">
           <div className="flex items-center gap-3 min-w-0">
             <div 
-              className="w-10 h-10 rounded-xl flex items-center justify-center text-white shrink-0 shadow-xs"
+              className="w-10 h-10 rounded-xl flex items-center justify-center text-white shrink-0 shadow-2xs"
               style={{ backgroundColor: cat.color }}
             >
               <CategoryIcon name={cat.icon} className="w-5 h-5" />
@@ -74,7 +74,7 @@ export const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
             </div>
           </div>
           <div className="shrink-0 text-right pl-2">
-            <span className={`text-sm font-bold ${isIncome ? 'text-emerald-600' : 'text-rose-600'}`}>
+            <span className={`text-sm font-bold ${isIncome ? 'text-sky-600' : 'text-pink-600'}`}>
               {isIncome ? '+' : '-'}{formatThaiCurrency(transaction.amount)}
             </span>
           </div>
@@ -95,7 +95,7 @@ export const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({
             type="button"
             onClick={onConfirm}
             disabled={isDeleting}
-            className="inline-flex items-center gap-2 px-5 py-2.5 text-xs sm:text-sm font-bold text-white bg-rose-600 hover:bg-rose-700 active:bg-rose-800 rounded-xl shadow-md shadow-rose-600/20 transition-all cursor-pointer disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-5 py-2.5 text-xs sm:text-sm font-bold text-white bg-pink-600 hover:bg-pink-700 active:bg-pink-800 rounded-xl shadow-md shadow-pink-300/40 transition-all cursor-pointer disabled:opacity-50"
           >
             <Trash2 className="w-4 h-4" />
             <span>{isDeleting ? 'กำลังลบ...' : 'ลบรายการทันที'}</span>

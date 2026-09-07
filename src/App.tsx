@@ -409,22 +409,22 @@ export default function App() {
   const currentBudget = budgets[`${selectedYear}-${String(selectedMonth).padStart(2, '0')}`] || 0;
 
   return (
-    <div className="min-h-screen bg-slate-50/50 flex flex-col antialiased">
+    <div className="min-h-screen flex flex-col antialiased">
       
       {/* Toast Notification */}
       {notification && (
         <div className="fixed top-20 right-4 z-50 animate-in fade-in slide-in-from-top-4 duration-300">
           <div className={`flex items-center gap-2.5 px-4 py-3 rounded-2xl shadow-lg border text-xs sm:text-sm font-medium ${
             notification.type === 'success'
-              ? 'bg-emerald-900/90 text-white border-emerald-700 backdrop-blur-md'
+              ? 'bg-sky-900/90 text-white border-sky-600 backdrop-blur-md'
               : notification.type === 'error'
-              ? 'bg-rose-900/90 text-white border-rose-700 backdrop-blur-md'
+              ? 'bg-pink-900/90 text-white border-pink-600 backdrop-blur-md'
               : 'bg-slate-900/90 text-white border-slate-700 backdrop-blur-md'
           }`}>
             {notification.type === 'success' ? (
-              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+              <CheckCircle2 className="w-4 h-4 text-sky-300 shrink-0" />
             ) : (
-              <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+              <AlertCircle className="w-4 h-4 text-pink-300 shrink-0" />
             )}
             <span>{notification.message}</span>
           </div>
@@ -448,20 +448,20 @@ export default function App() {
         
         {/* Firebase Status & Welcome Banner (If not logged in, show helpful callout) */}
         {!user && (
-          <div className="bg-gradient-to-r from-teal-900 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-md relative overflow-hidden">
+          <div className="bg-sky-50/70 rounded-3xl p-5 sm:p-6 text-slate-800 border-2 border-sky-100 shadow-2xs relative overflow-hidden">
             <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                    <Database className="w-3.5 h-3.5" />
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-sky-100 text-sky-700 border border-sky-200">
+                    <Database className="w-3.5 h-3.5 text-sky-500" />
                     Firebase Project: MoneyDB
                   </span>
                   <span className="text-xs text-slate-400 hidden sm:inline">คลาวด์ดาต้าเบสแบบเรียลไทม์</span>
                 </div>
-                <h2 className="text-lg sm:text-xl font-bold tracking-tight">
+                <h2 className="text-lg sm:text-xl font-bold tracking-tight text-slate-800">
                   บันทึกรายรับ-รายจ่าย พร้อมจัดเก็บลง Firebase อัตโนมัติ
                 </h2>
-                <p className="text-xs sm:text-sm text-slate-300 max-w-2xl">
+                <p className="text-xs sm:text-sm text-slate-600 max-w-2xl">
                   เข้าสู่ระบบด้วย Gmail เพื่อเก็บข้อมูลอย่างปลอดภัยบนฐานข้อมูล Firestore หรือทดลองใช้งานและบันทึกรายการได้ทันทีในโหมดพรีวิว
                 </p>
               </div>
@@ -471,7 +471,7 @@ export default function App() {
                   id="btn-banner-login"
                   onClick={handleLogin}
                   type="button"
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white text-slate-900 font-bold text-xs sm:text-sm hover:bg-slate-100 transition-colors shadow-sm cursor-pointer"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white text-slate-800 font-bold text-xs sm:text-sm hover:bg-sky-50 transition-colors shadow-2xs border border-slate-200 hover:border-sky-300 cursor-pointer"
                 >
                   <svg className="w-4 h-4" viewBox="0 0 24 24">
                     <path
@@ -510,9 +510,9 @@ export default function App() {
         />
 
         {/* 1.1 Quick Add Action Bar */}
-        <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 shadow-2xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-pink-100/80 shadow-2xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+            <div className="w-8 h-8 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center shrink-0">
               <PlusCircle className="w-5 h-5" />
             </div>
             <div>
@@ -530,18 +530,18 @@ export default function App() {
               id="btn-quick-add-expense"
               type="button"
               onClick={() => handleOpenAddModal('expense')}
-              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs sm:text-sm font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 active:bg-rose-200 border border-rose-200 rounded-xl transition-all cursor-pointer shadow-2xs"
+              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs sm:text-sm font-bold text-pink-700 bg-pink-50 hover:bg-pink-100 active:bg-pink-200 border border-pink-200 rounded-xl transition-all cursor-pointer shadow-2xs"
             >
-              <ArrowDownLeft className="w-4 h-4 text-rose-600" />
+              <ArrowDownLeft className="w-4 h-4 text-pink-500" />
               <span>+ บันทึกรายจ่าย</span>
             </button>
             <button
               id="btn-quick-add-income"
               type="button"
               onClick={() => handleOpenAddModal('income')}
-              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs sm:text-sm font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 active:bg-emerald-200 border border-emerald-200 rounded-xl transition-all cursor-pointer shadow-2xs"
+              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs sm:text-sm font-bold text-sky-700 bg-sky-50 hover:bg-sky-100 active:bg-sky-200 border border-sky-200 rounded-xl transition-all cursor-pointer shadow-2xs"
             >
-              <ArrowUpRight className="w-4 h-4 text-emerald-600" />
+              <ArrowUpRight className="w-4 h-4 text-sky-500" />
               <span>+ บันทึกรายรับ</span>
             </button>
           </div>
@@ -587,7 +587,7 @@ export default function App() {
           id="btn-fab-add-expense"
           type="button"
           onClick={() => handleOpenAddModal('expense')}
-          className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-full bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-lg shadow-rose-600/30 active:scale-95 transition-all cursor-pointer border border-rose-400/30"
+          className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-full bg-pink-500 hover:bg-pink-600 text-white font-bold text-xs shadow-lg shadow-pink-300/40 active:scale-95 transition-all cursor-pointer border border-pink-300/50"
           title="บันทึกรายจ่ายด่วน"
         >
           <ArrowDownLeft className="w-4 h-4" />
@@ -597,7 +597,7 @@ export default function App() {
           id="btn-fab-add-income"
           type="button"
           onClick={() => handleOpenAddModal('income')}
-          className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-lg shadow-emerald-600/30 active:scale-95 transition-all cursor-pointer border border-emerald-400/30"
+          className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-full bg-sky-500 hover:bg-sky-600 text-white font-bold text-xs shadow-lg shadow-sky-300/40 active:scale-95 transition-all cursor-pointer border border-sky-300/50"
           title="บันทึกรายรับด่วน"
         >
           <ArrowUpRight className="w-4 h-4" />
@@ -607,25 +607,27 @@ export default function App() {
           id="btn-fab-main-add"
           type="button"
           onClick={() => handleOpenAddModal('expense')}
-          className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm shadow-xl shadow-slate-900/30 active:scale-95 transition-all cursor-pointer border border-slate-700/50"
+          className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-pink-500 hover:bg-pink-600 text-white font-bold text-sm shadow-xl shadow-pink-200 active:scale-95 transition-all cursor-pointer border border-pink-400"
           title="เพิ่มรายการใหม่"
         >
-          <PlusCircle className="w-5 h-5 text-emerald-400" />
+          <PlusCircle className="w-5 h-5 text-white" />
           <span>+ บันทึกรายการ</span>
         </button>
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-slate-200 bg-white py-6 mt-12">
+      <footer className="border-t border-pink-100/80 bg-white/70 backdrop-blur-xs py-6 mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
           <div className="flex items-center gap-2">
             <img 
               src="/pvc-logo.png" 
               alt="วิทยาลัยอาชีวศึกษาแพร่" 
-              className="w-5 h-5 object-contain rounded-full border border-slate-200"
+              className="w-5 h-5 object-contain rounded-full border border-pink-200"
               referrerPolicy="no-referrer"
             />
-            <span className="font-bold text-slate-800">MoneyDB Expense Tracker</span>
+            <span className="font-bold text-slate-800">
+              <span className="text-sky-500">Money</span><span className="text-pink-500">DB</span> Expense Tracker
+            </span>
             <span>•</span>
             <span>วิทยาลัยอาชีวศึกษาแพร่</span>
             <span>•</span>
