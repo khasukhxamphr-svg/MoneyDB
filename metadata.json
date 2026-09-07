@@ -1,0 +1,6 @@
+{
+  "name": "MoneyDB Expense Tracker",
+  "description": "เว็บจัดการรายรับรายจ่าย พร้อมระบบสรุปผลรายเดือน กราฟวิเคราะห์ข้อมูล และเข้าสู่ระบบด้วย Google",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
