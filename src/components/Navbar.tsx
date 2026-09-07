@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppUser } from '../types';
+import { User } from 'firebase/auth';
 import { 
   Wallet, 
   LogIn, 
@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 
 interface NavbarProps {
-  user: AppUser | null;
+  user: User | null;
   loadingAuth: boolean;
   onLogin: () => void;
   onLogout: () => void;

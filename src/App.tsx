@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { 
   onAuthStateChanged, 
+  User, 
   collection, 
   doc, 
   addDoc, 
@@ -15,11 +16,9 @@ import {
   loginWithGoogle,
   logoutUser,
   parseAuthError,
-  createOrLoginWithGmailUser,
-  getActiveStoredUser,
   type AuthErrorInfo
 } from './firebase';
-import { Transaction, TransactionType, MonthlySummary, AppUser } from './types';
+import { Transaction, TransactionType, MonthlySummary } from './types';
 import { Navbar } from './components/Navbar';
 import { MonthSelector } from './components/MonthSelector';
 import { MonthlyOverviewCard } from './components/MonthlyOverviewCard';
@@ -51,9 +50,9 @@ export default function App() {
   const [selectedYear, setSelectedYear] = useState<number>(currentDate.getFullYear());
   const [selectedMonth, setSelectedMonth] = useState<number>(currentDate.getMonth() + 1);
 
-  // Auth state (restored from active stored session if available)
-  const [user, setUser] = useState<AppUser | null>(() => getActiveStoredUser());
-  const [loadingAuth, setLoadingAuth] = useState(false);
+  // Auth state
+  const [user, setUser] = useState<User | null>(null);
+  const [loadingAuth, setLoadingAuth] = useState(true);
 
   // Transactions state
   const [allTransactions, setAllTransactions] = useState<Transaction[]>([]);
@@ -90,26 +89,12 @@ export default function App() {
 
   // 1. Listen for Auth State
   useEffect(() => {
-    // Check if there is an active user stored in session
-    const stored = getActiveStoredUser();
-    if (stored) {
-      setUser(stored);
-      setLoadingAuth(false);
-    }
-
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        const appUser: AppUser = {
-          uid: currentUser.uid,
-          email: currentUser.email || '',
-          displayName: currentUser.displayName || currentUser.email?.split('@')[0] || 'User',
-          photoURL: currentUser.photoURL || undefined,
-          isCustomAuth: false,
-        };
-        setUser(appUser);
-        showNotification(`เข้าสู่ระบบสำเร็จ: ยินดีต้อนรับคุณ ${appUser.displayName}`, 'success');
-      }
+      setUser(currentUser);
       setLoadingAuth(false);
+      if (currentUser) {
+        showNotification(`เข้าสู่ระบบสำเร็จ: ยินดีต้อนรับคุณ ${currentUser.displayName || currentUser.email}`, 'success');
+      }
     });
     return () => unsubscribe();
   }, []);
@@ -198,64 +183,46 @@ export default function App() {
     }
   }, [allTransactions, user, loadingTransactions]);
 
-  // Handle Login button click: open Login / Gmail modal directly for seamless experience
-  const handleLogin = () => {
-    setShowAuthHelp(true);
-  };
-
-  // Handle Direct Gmail Login (works instantly without domain restrictions)
-  const handleLoginWithGmail = async (email: string, displayName: string) => {
-    try {
-      const loggedUser = createOrLoginWithGmailUser(email, displayName);
-      setUser(loggedUser);
-      setShowAuthHelp(false);
-      showNotification(`เข้าสู่ระบบสำเร็จ: ยินดีต้อนรับคุณ ${loggedUser.displayName} (${loggedUser.email})`, 'success');
-
-      // Sync guest data if any
-      try {
-        const guestData = localStorage.getItem(LOCAL_STORAGE_KEY);
-        if (guestData) {
-          const guestTransactions: Transaction[] = JSON.parse(guestData);
-          if (guestTransactions.length > 0 && guestTransactions.some(t => t.id.startsWith('guest-') || t.id.startsWith('seed-'))) {
-            for (const t of guestTransactions) {
-              await addDoc(collection(db, 'users', loggedUser.uid, 'transactions'), {
-                type: t.type,
-                amount: t.amount,
-                categoryId: t.categoryId,
-                categoryName: t.categoryName,
-                date: t.date,
-                time: t.time || null,
-                note: t.note || '',
-                createdAt: serverTimestamp()
-              });
-            }
-            localStorage.removeItem(LOCAL_STORAGE_KEY);
-            showNotification(`ซิงค์ข้อมูล ${guestTransactions.length} รายการไปยัง Cloud Firestore สำเร็จ!`, 'success');
-          }
-        }
-      } catch (syncErr) {
-        console.error("Migration error:", syncErr);
-      }
-    } catch (err) {
-      console.error("Gmail login error:", err);
-      showNotification("เกิดข้อผิดพลาดในการเข้าสู่ระบบ", "error");
-    }
-  };
-
-  // Handle Google Popup Login (as alternative)
-  const handleTryGooglePopup = async () => {
+  // Handle Google Login
+  const handleLogin = async () => {
     try {
       const loggedUser = await loginWithGoogle();
       if (loggedUser) {
-        setUser(loggedUser);
-        setShowAuthHelp(false);
-        showNotification(`เข้าสู่ระบบสำเร็จ: ยินดีต้อนรับคุณ ${loggedUser.displayName}`, 'success');
+        // Offer migrating guest data if any
+        try {
+          const guestData = localStorage.getItem(LOCAL_STORAGE_KEY);
+          if (guestData) {
+            const guestTransactions: Transaction[] = JSON.parse(guestData);
+            if (guestTransactions.length > 0 && guestTransactions.some(t => t.id.startsWith('guest-'))) {
+              // Upload guest items to firestore
+              for (const t of guestTransactions) {
+                await addDoc(collection(db, 'users', loggedUser.uid, 'transactions'), {
+                  type: t.type,
+                  amount: t.amount,
+                  categoryId: t.categoryId,
+                  categoryName: t.categoryName,
+                  date: t.date,
+                  time: t.time || null,
+                  note: t.note || '',
+                  createdAt: serverTimestamp()
+                });
+              }
+              localStorage.removeItem(LOCAL_STORAGE_KEY);
+              showNotification(`ซิงค์ข้อมูล ${guestTransactions.length} รายการไปยัง Firebase สำเร็จ!`, 'success');
+            }
+          }
+        } catch (syncErr) {
+          console.error("Migration error:", syncErr);
+        }
       }
     } catch (err: any) {
       console.error("Login failed:", err);
       const parsed = parseAuthError(err);
       setAuthErrorInfo(parsed);
-      setShowAuthHelp(true);
+      if (err.code !== 'auth/popup-closed-by-user') {
+        setShowAuthHelp(true);
+        showNotification(`${parsed.title}`, "error");
+      }
     }
   };
 
@@ -263,7 +230,6 @@ export default function App() {
   const handleLogout = async () => {
     try {
       await logoutUser();
-      setUser(null);
       showNotification("ออกจากระบบเรียบร้อยแล้ว", "info");
     } catch (err) {
       console.error("Logout failed:", err);
@@ -720,14 +686,12 @@ export default function App() {
         }
       />
 
-      {/* Google Sign-in / Gmail Login Modal */}
+      {/* Google Sign-in / Firebase Auth Help Modal */}
       <AuthHelpModal
         isOpen={showAuthHelp}
         onClose={() => setShowAuthHelp(false)}
         errorInfo={authErrorInfo}
-        onRetryLogin={handleTryGooglePopup}
-        onLoginWithGmail={handleLoginWithGmail}
-        defaultEmail="khasukhxamphr@gmail.com"
+        onRetryLogin={handleLogin}
       />
 
     </div>
