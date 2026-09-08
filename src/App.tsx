@@ -216,13 +216,16 @@ export default function App() {
         }
       }
     } catch (err: any) {
+      if (err?.code === 'auth/popup-closed-by-user') {
+        console.info("Login cancelled: user closed popup.");
+        showNotification("ยกเลิกการเข้าสู่ระบบแล้ว", "info");
+        return;
+      }
       console.error("Login failed:", err);
       const parsed = parseAuthError(err);
       setAuthErrorInfo(parsed);
-      if (err.code !== 'auth/popup-closed-by-user') {
-        setShowAuthHelp(true);
-        showNotification(`${parsed.title}`, "error");
-      }
+      setShowAuthHelp(true);
+      showNotification(`${parsed.title}`, "error");
     }
   };
 

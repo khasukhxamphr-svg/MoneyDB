@@ -43,10 +43,8 @@ export const db = firebaseConfig.firestoreDatabaseId
 export async function testConnection() {
   try {
     await getDocFromServer(doc(db, 'test', 'connection'));
-  } catch (error) {
-    if (error instanceof Error && error.message.includes('the client is offline')) {
-      console.warn("Firestore connection check: client is currently offline or connecting.");
-    }
+  } catch (error: any) {
+    console.debug("Firestore initial connection status:", error?.message || error);
   }
 }
 testConnection();
@@ -126,7 +124,11 @@ export const loginWithGoogle = async () => {
     const result = await signInWithPopup(auth, googleProvider);
     return result.user;
   } catch (error: any) {
-    console.error("Google sign-in error:", error);
+    if (error?.code === 'auth/popup-closed-by-user') {
+      console.info("Google sign-in popup was closed by user.");
+    } else {
+      console.error("Google sign-in error:", error);
+    }
     throw error;
   }
 };
