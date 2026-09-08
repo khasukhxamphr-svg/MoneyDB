@@ -3,6 +3,9 @@ import {
   getAuth, 
   GoogleAuthProvider, 
   signInWithPopup, 
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  updateProfile,
   signOut,
   onAuthStateChanged,
   type User
@@ -60,6 +63,16 @@ export interface AuthErrorInfo {
 export const parseAuthError = (error: any): AuthErrorInfo => {
   const code = error?.code || 'unknown';
   
+  if (code === 'auth/operation-not-allowed') {
+    return {
+      code,
+      title: 'ยังไม่ได้เปิดใช้งาน Provider ใน Firebase',
+      message: 'ใน Firebase Console ของโปรเจกต์ moneydb-b2623 ยังไม่ได้เปิดสวิตช์ใช้งานวิธีล็อกอินนี้ กรุณาไปที่ Authentication > Sign-in method แล้วกดเปิดใช้งาน Google หรือ Email/Password',
+      isPopupBlocked: false,
+      suggestNewTab: false,
+    };
+  }
+
   if (code === 'auth/popup-blocked') {
     return {
       code,
@@ -83,10 +96,10 @@ export const parseAuthError = (error: any): AuthErrorInfo => {
   if (code === 'auth/popup-closed-by-user') {
     return {
       code,
-      title: 'ยกเลิกการเข้าสู่ระบบ',
-      message: 'หน้าต่างเข้าสู่ระบบถูกปิดก่อนเสร็จสิ้น หากต้องการใช้งานกรุณากดปุ่มเข้าสู่ระบบอีกครั้ง',
+      title: 'หน้าต่างเข้าสู่ระบบถูกปิด',
+      message: 'หน้าต่างเข้าสู่ระบบถูกปิดก่อนเสร็จสิ้น หากเกิดข้อความแจ้งบล็อกใน Google Popup กรุณาตรวจสอบว่าได้เพิ่มโดเมน run.app ใน Firebase Console หรือกดเปิดในแท็บใหม่',
       isPopupBlocked: false,
-      suggestNewTab: false,
+      suggestNewTab: true,
     };
   }
 
@@ -94,9 +107,39 @@ export const parseAuthError = (error: any): AuthErrorInfo => {
     return {
       code,
       title: 'โดเมนยังไม่ได้รับอนุญาตใน Firebase',
-      message: 'โดเมนนี้ยังไม่ได้ลงทะเบียนใน Authorized Domains ของ Firebase Console กรุณาเปิดใช้งานในแท็บใหม่ หรือเพิ่มโดเมนใน Firebase Console',
+      message: 'โดเมนนี้ยังไม่ได้ลงทะเบียนใน Authorized Domains ของ Firebase Console กรุณาเพิ่ม run.app ใน Firebase Console > Authentication > Settings',
       isPopupBlocked: false,
       suggestNewTab: true,
+    };
+  }
+
+  if (code === 'auth/invalid-credential' || code === 'auth/wrong-password' || code === 'auth/user-not-found') {
+    return {
+      code,
+      title: 'อีเมลหรือรหัสผ่านไม่ถูกต้อง',
+      message: 'กรุณาตรวจสอบอีเมลและรหัสผ่าน หรือกดแท็บ "ลงทะเบียนใหม่" หากยังไม่มีบัญชี',
+      isPopupBlocked: false,
+      suggestNewTab: false,
+    };
+  }
+
+  if (code === 'auth/email-already-in-use') {
+    return {
+      code,
+      title: 'อีเมลนี้ถูกลงทะเบียนแล้ว',
+      message: 'มีบัญชีอีเมลนี้อยู่ในระบบแล้ว สามารถเข้าสู่ระบบด้วยรหัสผ่านได้ทันที',
+      isPopupBlocked: false,
+      suggestNewTab: false,
+    };
+  }
+
+  if (code === 'auth/weak-password') {
+    return {
+      code,
+      title: 'รหัสผ่านสั้นเกินไป',
+      message: 'รหัสผ่านต้องมีความยาวอย่างน้อย 6 ตัวอักษร',
+      isPopupBlocked: false,
+      suggestNewTab: false,
     };
   }
 
@@ -104,7 +147,7 @@ export const parseAuthError = (error: any): AuthErrorInfo => {
     return {
       code,
       title: 'การเชื่อมต่อขัดข้อง',
-      message: 'ไม่สามารถติดต่อเซิร์ฟเวอร์ Google Authentication ได้ กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต',
+      message: 'ไม่สามารถติดต่อเซิร์ฟเวอร์ Firebase ได้ กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต',
       isPopupBlocked: false,
       suggestNewTab: false,
     };
@@ -112,8 +155,8 @@ export const parseAuthError = (error: any): AuthErrorInfo => {
 
   return {
     code,
-    title: 'เข้าสู่ระบบด้วย Gmail ไม่สำเร็จ',
-    message: error?.message || 'เกิดข้อผิดพลาดในการยืนยันตัวตน กรุณาเปิดแอปในแท็บใหม่เพื่อลองใหม่อีกครั้ง',
+    title: 'เข้าสู่ระบบไม่สำเร็จ',
+    message: error?.message || 'เกิดข้อผิดพลาดในการยืนยันตัวตน กรุณาเปิดแอปในแท็บใหม่ หรือใช้งานในโหมดเครื่องทันที',
     isPopupBlocked: typeof code === 'string' && (code.includes('popup') || code.includes('internal')),
     suggestNewTab: true,
   };
@@ -129,6 +172,29 @@ export const loginWithGoogle = async () => {
     } else {
       console.error("Google sign-in error:", error);
     }
+    throw error;
+  }
+};
+
+export const loginWithEmail = async (email: string, pass: string) => {
+  try {
+    const result = await signInWithEmailAndPassword(auth, email, pass);
+    return result.user;
+  } catch (error: any) {
+    console.error("Email sign-in error:", error);
+    throw error;
+  }
+};
+
+export const registerWithEmail = async (email: string, pass: string, displayName?: string) => {
+  try {
+    const result = await createUserWithEmailAndPassword(auth, email, pass);
+    if (displayName && result.user) {
+      await updateProfile(result.user, { displayName });
+    }
+    return result.user;
+  } catch (error: any) {
+    console.error("Email registration error:", error);
     throw error;
   }
 };

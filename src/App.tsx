@@ -26,7 +26,7 @@ import { BudgetTracker } from './components/BudgetTracker';
 import { AnalyticsCharts } from './components/AnalyticsCharts';
 import { TransactionList } from './components/TransactionList';
 import { TransactionFormModal } from './components/TransactionFormModal';
-import { AuthHelpModal } from './components/AuthHelpModal';
+import { AuthModal } from './components/AuthModal';
 import { exportTransactionsToCSV } from './utils/exportCsv';
 import { getSeedTransactions } from './utils/demoData';
 import { 
@@ -446,13 +446,19 @@ export default function App() {
       <Navbar
         user={user}
         loadingAuth={loadingAuth}
-        onLogin={handleLogin}
+        onLogin={() => {
+          setAuthErrorInfo(null);
+          setShowAuthHelp(true);
+        }}
         onLogout={handleLogout}
         onOpenAddModal={() => handleOpenAddModal('expense')}
         onExportCSV={handleExportCSV}
         onSeedDemoData={handleSeedDemoData}
         hasTransactions={monthTransactions.length > 0}
-        onOpenAuthHelp={() => setShowAuthHelp(true)}
+        onOpenAuthHelp={() => {
+          setAuthErrorInfo(null);
+          setShowAuthHelp(true);
+        }}
       />
 
       {/* Main Container */}
@@ -481,7 +487,10 @@ export default function App() {
               <div className="flex flex-wrap items-center gap-2 shrink-0">
                 <button
                   id="btn-banner-login"
-                  onClick={handleLogin}
+                  onClick={() => {
+                    setAuthErrorInfo(null);
+                    setShowAuthHelp(true);
+                  }}
                   type="button"
                   className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white text-slate-800 font-bold text-xs sm:text-sm hover:bg-sky-50 transition-colors shadow-2xs border border-slate-200 hover:border-sky-300 cursor-pointer"
                 >
@@ -689,12 +698,12 @@ export default function App() {
         }
       />
 
-      {/* Google Sign-in / Firebase Auth Help Modal */}
-      <AuthHelpModal
+      {/* Google Sign-in / Firebase Auth Modal */}
+      <AuthModal
         isOpen={showAuthHelp}
         onClose={() => setShowAuthHelp(false)}
-        errorInfo={authErrorInfo}
-        onRetryLogin={handleLogin}
+        initialError={authErrorInfo}
+        onSuccess={(msg) => showNotification(msg, "success")}
       />
 
     </div>
